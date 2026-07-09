@@ -1,0 +1,6 @@
+[submodule "third_party/buildroot"]
+	path = third_party/buildroot
+	url = https://github.com/buildroot/buildroot.git
+[submodule "third_party/linux-0.12"]
+	path = third_party/linux-0.12
+	url = https://github.com/Banner13/linux-0.12.git

@@ -1,0 +1,34 @@
+services:
+  ubuntu16-dev:
+    container_name: ubuntu16-dev
+
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM ubuntu:16.04
+        RUN apt update
+
+        RUN apt install -y bash-completion 
+        RUN apt install -y locales && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+        RUN apt install -y make binutils build-essential diffutils 
+        RUN apt install -y gcc g++ bash patch gzip bzip2 perl tar cpio unzip rsync 
+        RUN apt install -y file bc findutils wget libncurses5-dev git
+
+        RUN apt install -y bin86 
+        RUN apt clean && rm -rf /var/lib/apt/lists/*
+
+        ENV LANG en_US.utf8
+
+        RUN addgroup --gid 1000 app && adduser --uid 1000 --gid 1000 --shell /bin/bash --disabled-password --gecos "" app
+        USER app
+        WORKDIR /home/app
+
+        ENTRYPOINT ["/bin/bash"]
+
+
+    tty: true
+
+    volumes:
+      - ./third_party:/home/app/mind-os
+
