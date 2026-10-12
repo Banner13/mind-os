@@ -1,0 +1,14 @@
+services:
+  qemu:
+    image: qemux/qemu:latest
+    container_name: qemu
+    entrypoint: "bash"
+
+    devices:
+      - /dev/kvm:/dev/kvm
+
+    volumes:
+      - ./storage:/storage
+
+    stdin_open: true
+    tty: true
