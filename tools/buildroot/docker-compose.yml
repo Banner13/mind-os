@@ -1,0 +1,26 @@
+services:
+  buildroot:
+    image: registry.gitlab.com/buildroot.org/buildroot/base:20250218.2110
+    container_name: buildroot
+    entrypoint: "bash"
+
+    user: "1000:1000"
+    security_opt:
+      - label=disable
+
+    working_dir: /home/qi/Github/mind-os/third_party/buildroot
+
+    volumes:
+      - type: bind
+        source: /home/qi/Github/mind-os/third_party/buildroot
+        target: /home/qi/Github/mind-os/third_party/buildroot
+        bind:
+          create_host_path: false
+      - ./.bashrc:/home/br-user/.bashrc:cached
+
+    environment:
+      - MINDOS_OUTPUT_DIR="output/mindos_aarch64_ebbr"
+
+    network_mode: "host"
+    stdin_open: true
+    tty: true
