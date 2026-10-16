@@ -1,0 +1,34 @@
+services:
+  yocto:
+    # image: docker.io/crops/poky:latest
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM docker.io/crops/poky:ubuntu-22.04
+
+        USER usersetup
+        RUN /usr/bin/usersetup.py \
+              --username=pokyuser \
+              --uid=1000 \
+              --gid=1000 \
+              --workdir=/home/pokyuser \
+              /usr/bin/poky-launch.sh /home/pokyuser /bin/true
+
+        ENV HOME=/home/pokyuser
+        WORKDIR /workdir
+        USER 1000:1000
+
+        ENTRYPOINT ["/usr/bin/distro-entry.sh", "/usr/bin/dumb-init", "--"]
+        CMD ["sleep", "infinity"]
+
+    container_name: yocto
+    # entrypoint: "bash"
+
+    volumes:
+      - type: bind
+        source: ./yocto-nxp-debix
+        target: /workdir
+
+    network_mode: "host"
+    stdin_open: true
+    tty: true
